@@ -1,0 +1,41 @@
+*{
+    margin: 0px;
+    padding: 0px;
+}
+header {
+    padding: 20px 80px;
+    border-bottom: 1px solid #EDEDED;
+    box-shadow: 0 1px 6px 0 rgba(32,33,36,0.28);
+    transition: 0.4s;
+}
+.logo img {
+    width: 240px;
+}
+
+.menu {
+    height: 100%;
+    display: flex;
+    float: right;
+}
+
+.list {
+    align-self: center;
+}
+.list a{
+    padding: 0px 10px;
+}
+#timkiem{
+    transition: 0.4s;
+}
+.an{
+    animation: hieuung 0.4s forwards;
+}
+@keyframes hieuung{
+    0%{
+        opacity: 1;
+    }
+    100%{
+        opacity: 0;
+        visibility: hidden;
+    }
+}

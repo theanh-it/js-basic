@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .noselect {
+        -webkit-touch-callout: none; /* iOS Safari */
+            -webkit-user-select: none; /* Safari */
+            -khtml-user-select: none; /* Konqueror HTML */
+            -moz-user-select: none; /* Old versions of Firefox */
+                -ms-user-select: none; /* Internet Explorer/Edge */
+                    user-select: none; /* Non-prefixed version, currently
+                                        supported by Chrome, Edge, Opera and Firefox */
+        }
+        html,
+        body {
+            height: 100%;
+            padding: 0px;
+        }
+        
+        .slide {
+            width: 100%;
+            height: 100px;
+            display: flex;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        
+        .slide .main {
+            height: 100%;
+            display: flex;
+            position: relative;
+            transition: 0.6s;
+        }
+        
+        .slide .main .item {
+            height: 100%;
+            width: 500px;
+            background: wheat;
+            outline: 1px dashed red;
+        }
+        
+        .slide .main .item.active {
+            display: block;
+        }
+        
+        .slide .next {
+            position: absolute;
+            right: 0px;
+        }
+        
+        .slide .pre {
+            position: absolute;
+            left: 0px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="slide noselect">
+        <div>
+            <span class="pre"><--</span>
+        </div>
+        <div class="main">
+            <div class="item">1</div>
+            <div class="item">2</div>
+            <div class="item">3</div>
+            <div class="item">4</div>
+            <div class="item">5</div>
+            <div class="item">6</div>
+            <div class="item">7</div>
+        </div>
+        <div>
+            <span class="next">--></span>
+        </div>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            var showItem = 3;
+            var slide = document.querySelector("div.slide");
+            var itemWidth = slide.offsetWidth / showItem;
+            //console.log(slide.offsetWidth);
+
+            var main = document.querySelector("div.slide div.main");
+
+            var items = document.querySelectorAll("div.slide div.main div.item");
+            items.forEach(e => e.style.width = itemWidth + "px");
+
+            main.style.width = items.length * itemWidth + "px";
+            
+            // loop
+            var active={
+                loop: Math.ceil(items.length/showItem),
+                div: items.length%showItem
+            };
+            var count=0;
+            
+            var actionLoop = () => {
+                count++;
+                count = count%active.loop;
+                loop = count;
+                console.log(loop, active);
+                if(active.div != 0 && loop == active.loop-1) main.style.transform = `translateX(-${(loop-1)*itemWidth*showItem + itemWidth*active.div}px)`;
+                else main.style.transform = `translateX(-${loop*itemWidth*showItem}px)`;
+            }
+            var actionLoopUp = () => {
+                count++;
+                count = count >= active.loop-1 ? active.loop-1: count;
+                loop = count;
+                console.log(loop,active);
+                if(active.div != 0 && loop == active.loop-1) main.style.transform = `translateX(-${(loop-1)*itemWidth*showItem + itemWidth*active.div}px)`;
+                else main.style.transform = `translateX(-${loop*itemWidth*showItem}px)`;
+            }
+            var actionLoopDown = () => {
+                count--;
+                count = count < 0 ? 0: count;
+                loop = count;
+                console.log(loop, active);
+                if(loop == 0) main.style.transform = `translateX(0px)`;
+                else main.style.transform = `translateX(-${loop*itemWidth*showItem}px)`;
+            }
+            var autoLoop = setInterval(actionLoop, 2000);
+            var activeLoop = () => autoLoop = setInterval(actionLoop, 2000);
+            var clearLoop = () => clearInterval(autoLoop);
+            //end loop
+
+            // luot chuot
+            var luot=false;
+            var x=0;
+            slide.addEventListener('mousedown', e => {
+                x = e.pageX;
+                //let y = e.offsetY;
+                luot=true;
+                main.style.transition = "0s";
+                //console.log("mousedown",x, count);
+                clearLoop();
+            });
+            slide.addEventListener('mousemove', e => {
+                if (luot === true) {
+                    loop = count%active.loop;
+                    let denta = x-e.pageX;
+                    //console.log("mousemove",e.pageX,denta);
+                    let width = 0;
+                    if(active.div != 0 && count==active.loop-1){
+                        width = -((count-1)*itemWidth*showItem + itemWidth*active.div + denta);
+                    }else width = -(loop*itemWidth*showItem + denta);
+
+                    main.style.transform = `translateX(${width}px)`;
+                }
+            });
+            window.addEventListener('mouseup', e => {
+                if (luot === true) {
+                    luot = false;
+                }
+                console.log("mouseup", count);
+                if(e.pageX < x) actionLoopUp(); 
+                else actionLoopDown();
+                main.style.transition = "2s";
+                activeLoop();
+            });
+            // end luot chuot
+
+            //nhấn giữ kéo
+            var arrTouch=[];
+            slide.addEventListener("touchmove", (e)=>{
+                clearLoop();
+                main.style.transition = "0s";
+                arrTouch.push(e.touches[0].pageX);
+
+                loop = count%active.loop;
+                let denta = arrTouch[0]-e.touches[0].pageX;
+                //console.log("mousemove",e.pageX,denta);
+                let width = 0;
+                if(active.div != 0 && count==active.loop-1){
+                    width = -((count-1)*itemWidth*showItem + itemWidth*active.div + denta);
+                }else width = -(loop*itemWidth*showItem + denta);
+
+                main.style.transform = `translateX(${width}px)`;
+            })
+            
+            slide.addEventListener("touchend", (e)=>{
+                if(arrTouch[arrTouch.length-1] < arrTouch[0]) actionLoopUp(); 
+                else actionLoopDown();
+                arrTouch=[];
+                main.style.transition = "0.6s";
+                activeLoop();
+            })
+            //end nhấn giữ kéo
+
+            var next = document.querySelector("div.slide div span.next"); 
+            next.onclick = () => {
+                count++;
+                main.style.transform = `translateX(-${(active%items.length)*itemWidth}px)`;
+            }
+
+            //resize
+            // window.onresize = ()=>{
+            //     itemWidth=window.innerWidth/showItem;
+            // };
+        }, false);
+    </script>
+</body>
+
+</html>

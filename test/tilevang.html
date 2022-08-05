@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #tilevang {
+            background-color: #eee;
+        }
+    </style>
+</head>
+
+<body>
+    <input type="number" v-text="obj" id="width">
+    <div id="tilevang">
+        123
+    </div>
+    <script>
+        var tilevang = document.getElementById("tilevang");
+        var width = document.getElementById("width");
+        console.log(width.attributes["v-text"].value);
+        width.onkeyup = () => {
+            tilevang.style.width = `${width.value}px`;
+            tilevang.style.height = `${width.value/1.62}px`;
+        }
+    </script>
+</body>
+
+</html>

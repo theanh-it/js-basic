@@ -1,0 +1,38 @@
+.card{
+   
+}
+.diphai{
+    transform: translateX(200px);
+}
+.animation{
+    animation: sangphai 1s forwards;
+}
+@keyframes sangphai{
+    0% {
+        transform: translateX(0);
+    }
+    50% {
+        transform: translateX(200px);
+    }
+    100% {
+        transform: translateX(200px);
+        margin-top: 200px;
+        opacity: 0;
+    }
+}
+.animation2{
+    animation: sangphai2 1s forwards;
+}
+@keyframes sangphai2{
+    100% {
+        transform: translateX(0);
+    }
+    50% {
+        transform: translateX(200px);
+    }
+    0% {
+        transform: translateX(200px);
+        margin-top: 200px;
+        opacity: 0;
+    }
+}

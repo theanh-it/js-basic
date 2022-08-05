@@ -1,0 +1,52 @@
+header {}
+
+.main-header {
+    width: 100%;
+    display: flex;
+}
+
+.main-header .logo {}
+
+ul,
+li {
+    list-style: none;
+}
+
+.main-header .menu {
+    flex-grow: 1;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+}
+
+.main-header .menu li {
+    padding: 5px;
+}
+
+.main-header .menu li a {
+    width: 400px;
+}
+
+.main-header .menu .box-menu {
+    display: none;
+}
+
+.main-header .menu .menu-first,
+.main-header .menu .menu-child {
+    position: relative;
+}
+
+.main-header .menu .menu-first:hover>.box-menu {
+    position: absolute;
+    bottom: -29px;
+    display: block;
+    background: wheat;
+}
+
+.main-header .menu .menu-child:hover>.box-menu {
+    position: absolute;
+    top: 0px;
+    right: -39px;
+    display: block;
+    background: wheat;
+}

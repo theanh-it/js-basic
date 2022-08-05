@@ -1,0 +1,55 @@
+* {
+    margin: 0px;
+    padding: 0px;
+}
+
+html,
+body {
+    width: 100%;
+}
+
+p {
+    padding: 10px;
+}
+
+.container {
+    max-width: 1135px;
+    margin: 0 auto;
+}
+
+.content {
+    width: 100%;
+}
+
+.row {
+    width: 100%;
+}
+
+.row:before {
+    content: " ";
+    display: table;
+    box-sizing: border-box;
+}
+
+.row:after {
+    content: " ";
+    clear: both;
+    box-sizing: border-box;
+}
+
+.row>.item {
+    width: 33.33%;
+    float: left;
+    background: red;
+    outline: 1px dashed black;
+}
+
+.clr {
+    clear: both;
+}
+
+@media (max-width:767px) {
+    .row>.item {
+        width: 50%;
+    }
+}
